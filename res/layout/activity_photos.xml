@@ -3,7 +3,7 @@
     android:id="@+id/swipeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    android:padding="6dp">
     
     <ListView
         android:id="@+id/lvPhotos"
@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:dividerHeight="8dp"
+        android:dividerHeight="6dp"
         android:divider="@color/gray"
         android:background="@color/white"         
         >

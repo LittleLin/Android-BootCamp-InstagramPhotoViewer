@@ -11,6 +11,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yahoo.apps.instagramphotoviewer.R;
 import com.yahoo.apps.instagramphotoviewer.adapters.InstagramPhotoAdapter;
+import com.yahoo.apps.instagramphotoviewer.models.InstagramComment;
 import com.yahoo.apps.instagramphotoviewer.models.InstagramPhoto;
 
 import android.app.Activity;
@@ -93,22 +94,27 @@ public class PhotosActivity extends Activity {
 				try {
 					photosJSON = response.getJSONArray("data");					
 					for (int i = 0; i < photosJSON.length(); i++) {
-						JSONObject photoJSON = photosJSON.getJSONObject(i);						
-						InstagramPhoto photo = new InstagramPhoto();
-						photo.username = photoJSON.getJSONObject("user").getString("username");
-						photo.userProfileImageUrl = photoJSON.getJSONObject("user").getString("profile_picture");
-						
-						if (photoJSON.getJSONObject("caption").getString("text") != null) {
+						try {
+							JSONObject photoJSON = photosJSON.getJSONObject(i);
+							InstagramPhoto photo = new InstagramPhoto();
+							photo.username = photoJSON.getJSONObject("user").getString("username");
+							photo.userProfileImageUrl = photoJSON.getJSONObject("user").getString("profile_picture");
 							photo.caption = photoJSON.getJSONObject("caption").getString("text");
+							photo.postTimestamp = photoJSON.getJSONObject("caption").getLong("created_time") * 1000l;
+
+							photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
+							photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
+							photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
+							photo.commentsCount = photoJSON.getJSONObject("comments").getInt("count");
+
+							// Comments handling
+							ArrayList<InstagramComment> comments = this.commentExtract(photoJSON);
+							photo.comments = comments;
+
+							popularPhotos.add(photo);
+						} catch (Exception ex) {
+							continue;
 						}
-						
-						photo.postTimestamp = photoJSON.getJSONObject("caption").getLong("created_time") * 1000l;
-						
-						photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
-						photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
-						photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
-						
-						popularPhotos.add(photo);
 					}
 					
 					aPhotos.notifyDataSetChanged();
@@ -119,20 +125,39 @@ public class PhotosActivity extends Activity {
 				}
 			}
 
+			// Comment extraction
+			private ArrayList<InstagramComment> commentExtract(JSONObject photoJSON) {
+				ArrayList<InstagramComment> comments = new ArrayList<InstagramComment>();				
+				try {
+					JSONArray commentsJSON = photoJSON.getJSONObject("comments").getJSONArray("data");
+					for (int j = 0; j < commentsJSON.length(); j++) {
+						JSONObject commentJSON = commentsJSON.getJSONObject(j);
+						
+						InstagramComment comment = new InstagramComment();
+						comment.username = commentJSON.getJSONObject("from").getString("username");
+						comment.profileImageUrl = commentJSON.getJSONObject("from").getString("profile_picture");
+						comment.postTimestamp = commentJSON.getLong("created_time");
+						comment.text = commentJSON.getString("text");
+						comments.add(comment);															
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				return comments;
+			}
+
 			@Override
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				super.onFailure(statusCode, headers, responseString, throwable);
 			}									
-		});
-		
-
-		
+		});				
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.photos, menu);
+		//getMenuInflater().inflate(R.menu.photos, menu);
 		return true;
 	}
 
@@ -140,11 +165,7 @@ public class PhotosActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-//		if (id == R.id.action_settings) {
-//			return true;
-//		}
+		// as you specify a parent activity in AndroidManifest.xml.		
 		return super.onOptionsItemSelected(item);
 	}
 }
