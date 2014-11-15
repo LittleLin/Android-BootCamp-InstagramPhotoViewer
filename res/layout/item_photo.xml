@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"        
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <ImageView
-        android:id="@+id/imgPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_launcher" />
+    android:layout_height="match_parent"
+    android:padding="5dp"
+     >
 
     <TextView
         android:id="@+id/tvCaption"
@@ -22,5 +14,65 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/imgPhoto"
         android:text="@string/caption_default_text" />
+    
+    <!-- <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/imgUserProfile"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/ic_launcher"
+        app:border_color="#EEEEEE"
+        app:border_width="4dp"
+        app:shadow="true" /> -->
+    
+    <com.yahoo.apps.instagramphotoviewer.widgets.RoundedImageView
+        android:id="@+id/imgUserProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:layout_marginLeft="5dp"        
+        android:layout_toRightOf="@+id/imgUserProfile"
+        android:text="@string/username_default_caption"
+        android:textSize="14sp"
+        android:textColor="@color/username"
+        android:textStyle="bold"
+        />
+    
+    <ImageView
+        android:id="@+id/imgPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/imgUserProfile"
+        android:adjustViewBounds="true"        
+        android:src="@drawable/ic_launcher" android:contentDescription="@string/empty_text"/>
+
+	<!-- android:scaleType="centerCrop" -->
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imgUserProfile"
+        android:layout_alignLeft="@+id/tvUsername"
+        android:text="@string/empty_text"
+        android:textSize="12sp" 
+        />
+
+    <!-- <Button
+        android:id="@+id/btnComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvCaption"
+        android:layout_below="@+id/tvCaption"
+        android:text="Button" /> -->
 
 </RelativeLayout>

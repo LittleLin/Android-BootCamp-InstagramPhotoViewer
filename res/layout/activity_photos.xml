@@ -1,9 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yahoo.apps.instagramphotoviewer.activities.PhotosActivity" >
-
+    android:padding="8dp">
+    
     <ListView
         android:id="@+id/lvPhotos"
         android:layout_width="match_parent"
@@ -11,8 +12,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:dividerHeight="8dp"
+        android:divider="@color/gray"
+        android:background="@color/white"         
+        >
 
     </ListView>
 
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>    
+
