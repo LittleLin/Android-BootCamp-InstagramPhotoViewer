@@ -6,6 +6,7 @@ import java.util.List;
 import com.squareup.picasso.Picasso;
 import com.yahoo.apps.instagramphotoviewer.R;
 import com.yahoo.apps.instagramphotoviewer.models.InstagramPhoto;
+import com.yahoo.apps.instagramphotoviewer.widgets.CircularImageView;
 import com.yahoo.apps.instagramphotoviewer.widgets.RoundedImageView;
 
 import android.content.Context;
@@ -38,7 +39,7 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
 		TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
 		TextView tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
 		ImageView imgPhoto = (ImageView) convertView.findViewById(R.id.imgPhoto);
-		RoundedImageView imgUserProfile = (RoundedImageView) convertView.findViewById(R.id.imgUserProfile);
+		CircularImageView imgUserProfile = (CircularImageView) convertView.findViewById(R.id.imgUserProfile);
 		
 		// Populate the subview (textfield, imageview) with the correct data 
 		tvCaption.setText(photo.caption);
@@ -47,7 +48,7 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
 		
 		// Set the image height before image loading
 		//imgPhoto.getLayoutParams().height = 320;
-		imgUserProfile.getLayoutParams().height = 60;
+		//imgUserProfile.getLayoutParams().height = 60;
 		
 		// Set the image from the recycled view
 		imgPhoto.setImageResource(0);
