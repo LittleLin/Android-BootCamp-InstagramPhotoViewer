@@ -77,7 +77,7 @@ public class PhotosActivity extends FragmentActivity {
 				
 		// https://api.instagram.com/v1/media/popular?client_id=<clientid>		
 		// Setup popular photo url endpoint
-		String popularUrl = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID + "&count=10";
+		String popularUrl = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID + "&count=50";
 		
 		// Create the network client
 		AsyncHttpClient client = new AsyncHttpClient();
