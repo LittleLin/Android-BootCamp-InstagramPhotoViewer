@@ -1,6 +1,8 @@
 package com.yahoo.apps.instagramphotoviewer.models;
 
-public class InstagramComment {
+import java.io.Serializable;
+
+public class InstagramComment implements Serializable {
 
 	public String text;
 	

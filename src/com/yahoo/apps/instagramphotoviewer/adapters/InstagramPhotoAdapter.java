@@ -6,12 +6,15 @@ import java.util.List;
 
 import com.squareup.picasso.Picasso;
 import com.yahoo.apps.instagramphotoviewer.R;
+import com.yahoo.apps.instagramphotoviewer.fragments.CommentsDialog;
 import com.yahoo.apps.instagramphotoviewer.models.InstagramComment;
 import com.yahoo.apps.instagramphotoviewer.models.InstagramPhoto;
 import com.yahoo.apps.instagramphotoviewer.widgets.CircularImageView;
 import com.yahoo.apps.instagramphotoviewer.widgets.RoundedImageView;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +27,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
+public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {		
 	public InstagramPhotoAdapter(Context context, List<InstagramPhoto> photos) {
 		super(context, android.R.layout.simple_list_item_1, photos);
 	}
@@ -52,7 +55,6 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
 		TextView tvShowMoreComments = (TextView) convertView.findViewById(R.id.tvShowMoreComments);
 		
 		CircularImageView imgUserProfile = (CircularImageView) convertView.findViewById(R.id.imgUserProfile);
-		//RoundedImageView imgUserProfile = (RoundedImageView) convertView.findViewById(R.id.imgUserProfile);
 		
 		// Populate the subview (textfield, imageview) with the correct data 
 		tvCaption.setText(photo.caption);
@@ -62,10 +64,10 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
 		DecimalFormat formatter = new DecimalFormat("#,###,###");
 		String likesCountDisplayText = String.format("%s Likes", formatter.format(photo.likesCount)); 
 		tvLikesCount.setText(likesCountDisplayText);		
-		String likesCommentsDisplayText = String.format("%s Comments", formatter.format(photo.likesCount)); 
+		String likesCommentsDisplayText = String.format("%s Comments", formatter.format(photo.commentsCount)); 
 		tvCommentsCount.setText(likesCommentsDisplayText);
 				
-		tvShowMoreComments.setOnClickListener(new CommentsClickListener());
+		tvShowMoreComments.setOnClickListener(new CommentsClickListener(photo));
 		
 		// Set the image from the recycled view
 		imgPhoto.setImageResource(0);
@@ -103,7 +105,7 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
 		}
 		
 		if (comments.size() >= 2) {
-			InstagramComment secondComment = comments.get(2);
+			InstagramComment secondComment = comments.get(1);
 			tvCommentUsername2.setText(secondComment.username);
 			tvCommentMessage2.setText(secondComment.text);
 			tvCommentTimestamp2.setText(DateUtils.getRelativeTimeSpanString(secondComment.postTimestamp * 1000, Calendar.getInstance().getTimeInMillis(), DateUtils.MINUTE_IN_MILLIS));
@@ -112,9 +114,18 @@ public class InstagramPhotoAdapter extends ArrayAdapter<InstagramPhoto> {
 	}	
 	
 	private class CommentsClickListener implements OnClickListener {
+		private InstagramPhoto photo;
+		
+		public CommentsClickListener(InstagramPhoto photo) {
+			this.photo = photo;
+		}
+
 		@Override
 		public void onClick(View v) {
-			Log.i("INFO", "clicked");			
+			FragmentActivity activity = (FragmentActivity)(getContext());
+			FragmentManager fm = activity.getSupportFragmentManager();
+		    CommentsDialog commentsDialog = CommentsDialog.newInstance("Comments", this.photo.comments);
+		    commentsDialog.show(fm, "fragment_comments");			
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.yahoo.apps.instagramphotoviewer.activities;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -11,12 +12,15 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yahoo.apps.instagramphotoviewer.R;
 import com.yahoo.apps.instagramphotoviewer.adapters.InstagramPhotoAdapter;
+import com.yahoo.apps.instagramphotoviewer.fragments.CommentsDialog;
 import com.yahoo.apps.instagramphotoviewer.models.InstagramComment;
 import com.yahoo.apps.instagramphotoviewer.models.InstagramPhoto;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
@@ -24,7 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-public class PhotosActivity extends Activity {
+public class PhotosActivity extends FragmentActivity {
 	public static final String CLIENT_ID="62b395714aa348e591fa0c2eef903e7d";
 	private ArrayList<InstagramPhoto> popularPhotos;
 	private InstagramPhotoAdapter aPhotos;
@@ -35,13 +39,11 @@ public class PhotosActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photos);
 		
-		
 		// set background color
 		getWindow().getDecorView().setBackgroundColor(Color.GRAY);
 		
 		// fetch the default data
-		fetchPopularPhotos();
-		
+		fetchPopularPhotos();		
 		
 		swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         
@@ -63,6 +65,8 @@ public class PhotosActivity extends Activity {
                 android.R.color.holo_red_light);
 	}
 
+	
+
 	private void fetchPopularPhotos() {
 		this.popularPhotos = new ArrayList<InstagramPhoto>();
 		
@@ -70,8 +74,7 @@ public class PhotosActivity extends Activity {
 			
 		ListView lvPhotos = (ListView) this.findViewById(R.id.lvPhotos);
 		lvPhotos.setAdapter(aPhotos);
-		
-		
+				
 		// https://api.instagram.com/v1/media/popular?client_id=<clientid>		
 		// Setup popular photo url endpoint
 		String popularUrl = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID + "&count=10";
@@ -144,6 +147,7 @@ public class PhotosActivity extends Activity {
 					e.printStackTrace();
 				}
 				
+				Collections.reverse(comments);
 				return comments;
 			}
 

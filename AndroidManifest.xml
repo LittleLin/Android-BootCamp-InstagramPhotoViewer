@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.yahoo.apps.instagramphotoviewer.activities.PhotosActivity"
-            android:label="@string/popular_photos_caption" >
+            android:label="@string/popular_photos_caption" 
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
